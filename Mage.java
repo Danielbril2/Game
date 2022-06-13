@@ -1,6 +1,7 @@
 package com.company;
 
-public class Mage extends Player{
+public class Mage extends Player
+{
 
     private int manaPool;
     private int currMana;
@@ -10,11 +11,10 @@ public class Mage extends Player{
     private int abilityRange;
 
 
-    public Mage(char tile, int x, int y, String name, int attack, int defense, Health health,
-                int experience, int level, int manaPool, int manaCost, int spellPower,
-                int hitCounter, int abilityRange)
+    public Mage(Position pos, String name, int attack, int defense, Health health,
+                int manaPool, int manaCost, int spellPower, int hitCounter, int abilityRange)
     {
-        super (tile, x, y, name, attack, defense, health, experience, level);
+        super (pos, name, attack, defense, health);
         this.manaPool = manaPool;
         this.currMana = this.manaPool / 4;
         this.manaCost = manaCost;
@@ -23,12 +23,6 @@ public class Mage extends Player{
         this.abilityRange = abilityRange;
     }
 
-    public int gteCurrMana()
-    {
-        return this.currMana;
-    }
-    public int getAbilityRange()
-    {
-        return this.abilityRange;
-    }
+    public int gteCurrMana() {return this.currMana;}
+    public int getAbilityRange() {return this.abilityRange;}
 }

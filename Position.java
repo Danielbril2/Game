@@ -11,6 +11,11 @@ public class Position {
 
     public int getX(){return this.x;}
     public int getY(){return this.y;}
+
+    public static Position at(int x, int y){
+        return new Position(x,y);
+    }
+
     public void SetPosition(Position pos){
         this.x = pos.getX();
         this.y = pos.getY();

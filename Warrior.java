@@ -1,24 +1,18 @@
 package com.company;
 
-public class Warrior extends  Player{
+public class Warrior extends  Player
+{
     private int cooldown;
     private int remainingCooldown;
 
-    public Warrior (char tile, String name, int attack, int defense, int health,
-                    int experience, int level, int cooldown)
+    public Warrior (Position pos, String name, int attack, int defense, Health health, int cooldown)
     {
-        super (tile, name, health, attack, defense, experience, level);
+        super (pos, name, attack, defense, health);
         this.cooldown = cooldown;
         this.remainingCooldown = 0;
     }
 
-    public int getRemainingCooldown()
-    {
-        return this.remainingCooldown;
-    }
-    public int getCooldown()
-    {
-        return this.cooldown;
-    }
+    public int getRemainingCooldown() {return this.remainingCooldown;}
+    public int getCooldown() {return this.cooldown;}
 
 }

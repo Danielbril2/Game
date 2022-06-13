@@ -1,14 +1,13 @@
 package com.company;
 
-public class Rogue extends Player{
-
+public class Rogue extends Player
+{
     private int cost;
     private int currEnergy;
 
-    public Rogue (char tile, int x, int y, String name, int attack, int defense, Health health,
-                  int experience, int level, int cost)
+    public Rogue (Position pos, String name, int attack, int defense, Health health, int cost)
     {
-        super (tile, x, y, name, attack, defense, health, experience, level);
+        super (pos, name, attack, defense, health);
         this.cost = cost;
         this.currEnergy = 100;
     }

@@ -1,23 +1,25 @@
 package com.company;
 
-public class Enemy extends Unit{
+public class Enemy extends Unit
+{
 
-    private int experience;
+    private int experienceValue;
 
-    public Enemy(char tile, String name, int attack, int defense, int health, int experience)
+    public Enemy(char tile, Position pos, String name, int attack, int defense, Health health, int experienceValue)
     {
-        super(tile, name, health, attack, defense);
-        this.experience = experience;
+        super(tile, pos, name, attack, defense, health);
+        this.experienceValue = experienceValue;
     }
 
-    public int getExperience()
-    {
-        return this.experience;
-    }
+    public int getExperienceValue() {return this.experienceValue;}
 
     @Override
     public void move(char action)
     {
+
+    }
+
+    public void accept(Unit unit){
 
     }
 }

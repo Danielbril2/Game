@@ -1,26 +1,26 @@
 package com.company;
 
-public abstract class Unit extends Tile{
+public abstract class Unit extends Tile
+{
     private String name;
     private int attack;
     private int defense;
-    private int healthAmount;
+    private Health health;
 
-    public Unit(char tile, String name, int healthAmount,int attack, int defense)
+    public Unit(char tile, Position pos, String name, int attack, int defense, Health health)
     {
-        super(tile);
+        super(tile, pos);
         this.name = name;
         this.attack = attack;
         this.defense = defense;
-        this.healthAmount = healthAmount;
+        this.health = health;
     }
 
     public String getName() {return this.name;}
     public int getAttack() {return this.attack;}
     public int getDefense() {return this.defense;}
-    public int getHealth() {return this.healthAmount;}
+    public Health getHealth() {return this.health;}
 
-    public abstract void move(char action);
 
     public String describe() {
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", getName(), getHealth(), getAttack(), getDefense());
