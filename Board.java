@@ -17,7 +17,7 @@ public class Board
         for(Tile t : tiles)
             if (t.getPosition().equals(Position.at(x, y)))
                 return t;
-        throw new NoSuchElementException("There is no tile in this position");
+        return null;
     }
 
     public void remove(Enemy e) {
@@ -26,10 +26,6 @@ public class Board
         tiles.add(new Empty(p));
     }
 
-    public static double findRange(int x1, int y1, int x2, int y2)
-    {
-        return Math.abs(Math.sqrt(x1 - x2) + Math.sqrt(y1 - y2));
-    }
     @Override
     public String toString() {
         tiles = tiles.stream().sorted().collect(Collectors.toList());
@@ -38,6 +34,23 @@ public class Board
     }
 
     public List<Tile> getTiles() {return tiles;}
+
+    public List<Enemy> getEnemies(){
+        List<Enemy> res = new ArrayList<>();
+        for (Tile t : tiles) {
+            if (t instanceof Enemy)
+                res.add((Enemy) t);
+        }
+        return res;
+    }
+
+    public Player getPlayer()
+    {
+        for (Tile t : this.tiles)
+            if (t.getTile() =='@')
+                return (Player)t;
+        return null;
+    }
 
 
 }

@@ -5,9 +5,9 @@ public class Warrior extends  Player
     private int cooldown;
     private int remainingCooldown;
 
-    public Warrior (Position pos, String name, int attack, int defense, Health health, int cooldown)
+    public Warrior (String name, int healCapacity, int attack, int defense, int cooldown)
     {
-        super (pos, name, attack, defense, health);
+        super (name, healCapacity, attack, defense);
         this.cooldown = cooldown;
         this.remainingCooldown = 0;
     }

@@ -11,10 +11,10 @@ public class Mage extends Player
     private int abilityRange;
 
 
-    public Mage(Position pos, String name, int attack, int defense, Health health,
-                int manaPool, int manaCost, int spellPower, int hitCounter, int abilityRange)
+    public Mage(String name, int healCapacity, int attack, int defense, int manaPool, int manaCost,
+                int spellPower, int hitCounter,int abilityRange)
     {
-        super (pos, name, attack, defense, health);
+        super (name, healCapacity, attack, defense);
         this.manaPool = manaPool;
         this.currMana = this.manaPool / 4;
         this.manaCost = manaCost;
@@ -25,4 +25,9 @@ public class Mage extends Player
 
     public int gteCurrMana() {return this.currMana;}
     public int getAbilityRange() {return this.abilityRange;}
+    public int getManaPool() {return this.manaPool;}
+    public int getManaCost() {return this.manaCost;}
+    public int getSpellPower() {return this.spellPower;}
+    public int getHitCounter() {return this.hitCounter;}
+
 }

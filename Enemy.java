@@ -1,25 +1,43 @@
 package com.company;
 
-public class Enemy extends Unit
+public abstract class Enemy extends Unit
 {
-
     private int experienceValue;
+    protected Position playerPos;
 
-    public Enemy(char tile, Position pos, String name, int attack, int defense, Health health, int experienceValue)
+    public Enemy(char tile,String name, int healCapacity, int attack, int defense, int experienceValue)
     {
-        super(tile, pos, name, attack, defense, health);
+        super(tile, name, healCapacity, attack, defense);
         this.experienceValue = experienceValue;
+        playerPos = new Position(0,0);
+    }
+
+    public void updatePlayerPos(Position pos){
+        playerPos = pos;
     }
 
     public int getExperienceValue() {return this.experienceValue;}
 
-    @Override
-    public void move(char action)
-    {
-
-    }
 
     public void accept(Unit unit){
 
     }
+
+    public void visit(Player p){
+        //probably not need to implement
+    }
+
+    public void visit(Enemy e){
+
+    }
+
+    public void processStep(){
+
+    }
+
+    public void onDeath(){
+
+    }
+
+    public abstract void move();
 }

@@ -5,9 +5,9 @@ public class Rogue extends Player
     private int cost;
     private int currEnergy;
 
-    public Rogue (Position pos, String name, int attack, int defense, Health health, int cost)
+    public Rogue (String name, int healCapacity, int attack, int defense, int cost)
     {
-        super (pos, name, attack, defense, health);
+        super (name, healCapacity, attack, defense);
         this.cost = cost;
         this.currEnergy = 100;
     }

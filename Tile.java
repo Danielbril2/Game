@@ -1,20 +1,30 @@
 package com.company;
 
 public abstract class Tile {
-    private char tile;
-    private Position pos;
+    protected char tile;
+    protected Position position;
 
-    public Tile(char tile, Position pos)
-    {
+    protected Tile(char tile){
         this.tile = tile;
-        this.pos = pos;
     }
 
-    public char getTile() {return this.tile;}
-    public Position getPosition() {return this.pos;}
-    public void setPosition(Position pos) {this.pos = pos;}
+    protected void initialize(Position position){
+        this.position = position;
+    }
+
+    public char getTile() {
+        return tile;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public abstract void accept(Unit unit);
-    public abstract void move(char action);
 
 //    @Override
 //    public int compareTo(Tile tile) {
@@ -24,5 +34,11 @@ public abstract class Tile {
     @Override
     public String toString() {
         return String.valueOf(tile);
+    }
+
+    public double findRange(Position pos)
+    {
+        return Math.abs(Math.sqrt(position.getX() - pos.getX()) +
+                Math.sqrt(position.getY() - pos.getY()));
     }
 }

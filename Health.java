@@ -4,9 +4,9 @@ public class Health {
     private int healthPool; //max health
     private int healthAmount; //curr health
 
-    public Health(int healthPool, int healthAmount){
+    public Health(int healthPool){
         this.healthPool = healthPool;
-        this.healthAmount = healthAmount;
+        this.healthAmount = healthPool;
     }
 
     public int getHealthAmount() {return healthAmount;}
