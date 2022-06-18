@@ -47,7 +47,19 @@ public abstract class Unit extends Tile
 
     // This unit attempts to interact with another tile.
     public void interact(Tile tile){
+        //check if tile a dor than change its position and our position
+        //if tile a wall do nothing
+        //if tile an enemy start a combat
+        if (tile.getTile() == '.'){ //if empty tile than just switch between the places
+            Position emptyPos = tile.getPosition();
+            tile.position.SetPosition(this.position);
+            this.setPosition(emptyPos);
+        }
+        else if (tile.getTile() == '#'){return;}//if trying to do to the wall do nothing. Need to be empty case
+        // because we want the "else" later.
+        else{ //trying to attack
 
+        }
     }
 
     public void visit(Empty e){
@@ -79,5 +91,5 @@ public abstract class Unit extends Tile
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", getName(), getHealth(), getAttack(), getDefense());
     }
 
-    public abstract void move();
+    public abstract Position move();
 }

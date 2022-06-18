@@ -22,12 +22,19 @@ public class GameController {
     }
 
     private void tick(){
-        p.move();
+        Position playerDesiredPos = p.move();
+        //need to check if player can move here. If the desired position contains empty tile, wall tile
+        //or enemy tile
+
+        //interact does change the inner position of the player(Unit)
+        //but need to change the curr pos to dot if moving
+        p.interact(board.get(playerDesiredPos.getX(), playerDesiredPos.getY()));
+
 
         List<Enemy> enemies = board.getEnemies();
         for(Enemy e: enemies) {
             e.updatePlayerPos(p.getPosition());
-            e.move();
+            Position enemyDesiredPos = e.move();
         }
 
 

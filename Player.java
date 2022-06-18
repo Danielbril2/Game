@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -45,17 +44,21 @@ public class Player extends Unit
     }
 
     @Override
-    public void move(){
-        //accept info from user
-        Scanner input =  new Scanner(System.in);
+    public Position move() {
+        while (true) {
+            Scanner input = new Scanner(System.in); //accept input from user
 
-        char action = input.next().charAt(0);
+            char action = input.next().charAt(0); //convert input into char
 
-        char[] moves = {'w','s','a','d'};
-        int[][] posUpdates = {{0,1},{0,-1},{-1,0},{1,0}}; //up, down, left, right
+            char[] moves = {'w', 's', 'a', 'd'};
+            int[][] posUpdates = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}}; //up, down, left, right
 
-        for (int i = 0; i < moves.length; i++)
-            if (moves[i] == action)
-                getPosition().addPos(Position.at(posUpdates[i][0],posUpdates[i][1])); //updating the position
+            for (int i = 0; i < moves.length; i++)
+                if (moves[i] == action) {
+                    Position move = Position.at(posUpdates[i][0], posUpdates[i][1]);
+                    return position.addPos(move);
+                }
+        }
+
     }
 }

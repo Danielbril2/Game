@@ -14,7 +14,7 @@ public class Monster extends Enemy{
     public int getVisionRange() {return this.visionRange;}
 
     @Override
-    public void move(){
+    public Position move(){
         if (findRange(this.playerPos) < visionRange){
             Position playerP = this.playerPos;
             int dx = this.position.getX() - playerP.getX();
@@ -37,5 +37,8 @@ public class Monster extends Enemy{
             Position moveP = Position.at(move[0],move[1]);
             setPosition(position.addPos(moveP));
         }
+
+        return null;
+        //NEED TO CHANGE
     }
 }

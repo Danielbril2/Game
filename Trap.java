@@ -24,7 +24,7 @@ public class Trap extends  Enemy {
     public void setTicks(int ticks) {this.tickCounter = ticks;}
 
     @Override
-    public void move(){
+    public Position move(){
         visible = tickCounter < visibilityTime;
         if (tickCounter == (visibilityTime + invisibilityTime))
             tickCounter = 0;
@@ -35,6 +35,7 @@ public class Trap extends  Enemy {
             int attckValue = attack();
             //need to do some more
         }
+        return position;
 
     }
 

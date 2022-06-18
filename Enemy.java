@@ -39,5 +39,5 @@ public abstract class Enemy extends Unit
 
     }
 
-    public abstract void move();
+    public abstract Position move();
 }
