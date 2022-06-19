@@ -20,7 +20,7 @@ public class Board
         return null;
     }
 
-    public void remove(Enemy e) {
+    public void remove(Tile e) {
         tiles.remove(e);
         Position p = e.getPosition();
         tiles.add(new Empty(p));
@@ -38,8 +38,8 @@ public class Board
     public List<Enemy> getEnemies(){
         List<Enemy> res = new ArrayList<>();
         for (Tile t : tiles) {
-            if (t instanceof Enemy)
-                res.add((Enemy) t);
+            if (t.isEnemy())
+                res.add(t.getEnemyVersion());
         }
         return res;
     }
@@ -47,8 +47,8 @@ public class Board
     public Player getPlayer()
     {
         for (Tile t : this.tiles)
-            if (t.getTile() =='@')
-                return (Player) t;
+            if (t.isPlayer())
+                return t.getPlayerVersion();
         return null;
     }
 

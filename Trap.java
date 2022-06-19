@@ -15,13 +15,6 @@ public class Trap extends  Enemy {
         this.tickCounter = 0;
         this.visible = true;
     }
-    public int getVisibilityTime() {return this.visibilityTime;}
-    public int getInvisibilityTime() {return this.invisibilityTime;}
-    public int getTickCounter() {return this.tickCounter;}
-    public boolean getIsVisible() {return this.visible;}
-
-    public void setVisible(boolean isVisible){this.visible = isVisible;}
-    public void setTicks(int ticks) {this.tickCounter = ticks;}
 
     @Override
     public Position move(){
@@ -31,13 +24,10 @@ public class Trap extends  Enemy {
         else
             tickCounter++;
 
-        if (findRange(this.playerPos) < 2) {
-            //battle();
-            int attckValue = attack();
-            //need to do some more
-        }
-        return position;
+        if (findRange(this.playerPos) < 2)
+            battle(observer.getPlayer());
 
+        return position;
     }
 
 

@@ -23,16 +23,12 @@ public abstract class Enemy extends Unit
     public void accept(Unit unit){
         unit.visit(this);
     }
-
     public void visit(Player p){ //combat against the player
         battle(p);
     }
-
     public void visit(Enemy e){/*cannot go there so empty method*/}
 
-    public void processStep(){
-
-    }
+    public void processStep(){}
 
     public void onDeath(){
         isAlive = false;
@@ -41,5 +37,12 @@ public abstract class Enemy extends Unit
 
     public abstract Position move();
 
-    //public abstract boolean turn();
+    @Override
+    public boolean isEnemy(){return true;}
+    @Override
+    public Enemy getEnemyVersion() {return this;}
+    @Override
+    public boolean isPlayer() {return false;}
+    @Override
+    public Player getPlayerVersion() {return null;}
 }

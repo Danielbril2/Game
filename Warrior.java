@@ -43,7 +43,7 @@ public class Warrior extends  Player
         if (specialBattle(e, (int)(health.getHealthPool() * 0.1)))
             processKilling(e);
     }
-    
+
     public boolean specialBattle(Unit u, int damage){
         u.acceptDamage(damage);
 
@@ -53,7 +53,6 @@ public class Warrior extends  Player
     @Override
     public void levelUp(){
         super.levelUp();
-        System.out.println("we got here");
         remainingCooldown = 0;
         health.setHealthPool(health.getHealthPool() + 5 * level);
         setAttack(attack + (2 * level));

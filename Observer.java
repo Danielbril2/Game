@@ -17,4 +17,6 @@ public class Observer {
                 enemies.add(e);
         return enemies;
     }
+
+    public Player getPlayer(){return this.p;}
 }

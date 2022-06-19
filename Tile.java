@@ -26,6 +26,11 @@ public abstract class Tile {
 
     public abstract void accept(Unit unit);
 
+    public abstract boolean isEnemy();
+    public abstract boolean isPlayer();
+    public abstract Player getPlayerVersion();
+    public abstract Enemy getEnemyVersion();
+
 //    @Override
 //    public int compareTo(Tile tile) {
 //        return getPosition().compareTo(tile.getPosition());

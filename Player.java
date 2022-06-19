@@ -24,7 +24,6 @@ public abstract class Player extends Unit
     public void setExperience(int experience){ this.experience = experience;}
 
     public void levelUp() {
-        System.out.println("Player level");
         experience -= 50 * level;
         level++;
         health.setHealthPool(health.getHealthPool() + 10 * level);
@@ -85,4 +84,15 @@ public abstract class Player extends Unit
             }
         }
     }
+
+    @Override
+    public boolean isEnemy() {return false;}
+    @Override
+    public Enemy getEnemyVersion() {return null;}
+
+    @Override
+    public boolean isPlayer() {return true;}
+
+    @Override
+    public Player getPlayerVersion() {return this;}
 }

@@ -11,4 +11,13 @@ public class Wall extends Tile{
     public void accept(Unit unit){
 
     }
+
+    @Override
+    public boolean isEnemy(){return false;}
+    @Override
+    public Enemy getEnemyVersion() {return null;}
+    @Override
+    public boolean isPlayer() {return false;}
+    @Override
+    public Player getPlayerVersion() {return null;}
 }

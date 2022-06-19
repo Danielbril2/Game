@@ -7,21 +7,22 @@ public class GameController {
 
     public GameController(Board board){
         this.board = board;
-        findPlayer();
+        this.p = findPlayer();
     }
 
-    public void findPlayer(){
-        this.p = board.getPlayer();
+    public Player findPlayer(){
+        return board.getPlayer();
     }
 
     public void startGame(){
         //need to choose the player somehow?
 
-        //also need to go to next level
-        while(!isGameDone()){
+        while(isPlayerAlive()){
+            //need to start a level, that after that level go to the next level
             tick();
             //update map
         }
+        System.out.println("Game Over.");
     }
 
     private void tick(){
@@ -29,7 +30,7 @@ public class GameController {
 
         Tile nextTile;
 
-        if (!playerDesiredPos.equals(Position.at(-1,-1))) { //the player did not activated his special ability
+        if (!playerDesiredPos.equals(Position.at(-1,-1))) { //the player did not activate his special ability
             nextTile = board.get(playerDesiredPos.getX(), playerDesiredPos.getY());
             p.interact(nextTile);
         }
@@ -45,15 +46,14 @@ public class GameController {
 
     }
 
-    private boolean isGameDone(){
-        findPlayer();
+    public boolean isPlayerAlive(){
+        return findPlayer() != null;
+    }
 
-        if (p == null) //checking if player dead
-            return true;
-
+    private boolean isLevelDone(){
         List<Tile> tiles = board.getTiles();
         for(Tile t: tiles)
-            if(t instanceof Enemy) // CHANGE!!!!!!!!
+            if(t.isEnemy())
                 return false;
         return true;
     }
