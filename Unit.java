@@ -1,12 +1,11 @@
 package com.company;
 import java.lang.Math;
 
-public abstract class Unit extends Tile
-{
-    private String name;
-    private int attack;
-    private int defense;
-    private Health health;
+public abstract class Unit extends Tile implements Visitor {
+    protected String name;
+    protected int attack;
+    protected int defense;
+    protected Health health;
 
     public Unit(char tile,String name, int healCapacity, int attack, int defense)
     {
@@ -22,9 +21,8 @@ public abstract class Unit extends Tile
     public int getDefense() {return this.defense;}
     public Health getHealth() {return this.health;}
 
-    public void accept(Unit unit){
-
-    }
+    public void setAttack(int attack) {this.attack = attack;}
+    public void setDefense(int defense) {this.defense = defense;}
 
     protected void initialize(Position position, MessageCallback messageCallback){
         this.initialize(position);
@@ -45,25 +43,18 @@ public abstract class Unit extends Tile
     // What happens when the unit dies
     public abstract void onDeath();
 
+    public abstract void accept(Unit unit);
+
     // This unit attempts to interact with another tile.
     public void interact(Tile tile){
-        //check if tile a dor than change its position and our position
-        //if tile a wall do nothing
-        //if tile an enemy start a combat
-        if (tile.getTile() == '.'){ //if empty tile than just switch between the places
-            Position emptyPos = tile.getPosition();
-            tile.position.SetPosition(this.position);
-            this.setPosition(emptyPos);
-        }
-        else if (tile.getTile() == '#'){return;}//if trying to do to the wall do nothing. Need to be empty case
-        // because we want the "else" later.
-        else{ //trying to attack
-
-        }
+        if (tile.getTile() != '#')//if we want to go to a wall we are unable to do it
+            tile.accept(this);
     }
 
     public void visit(Empty e){
-
+        Position emptyPos = e.getPosition();
+        e.position.SetPosition(this.position);
+        this.setPosition(emptyPos);
     }
 
     public abstract void visit(Player p);
@@ -71,18 +62,11 @@ public abstract class Unit extends Tile
 
     // Combat against another unit.
     protected void battle(Unit u){
-        int ourMove;
-        int opponentMove;
-        //the attacker turn
-        ourMove = attack();
-        opponentMove = u.defend();
+        int ourMove = attack();
+        int opponentMove = u.defend();
+
         if (ourMove > opponentMove)
             u.acceptDamage(ourMove - opponentMove);
-        //the opponent turn
-         opponentMove = u.attack();
-         ourMove = defend();
-         if (opponentMove > ourMove)
-             acceptDamage(opponentMove - ourMove);
     }
 
     public void acceptDamage(int damage) {health.setHealthAmount(health.getHealthAmount() - damage);}

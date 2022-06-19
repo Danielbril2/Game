@@ -32,6 +32,7 @@ public class Trap extends  Enemy {
             tickCounter++;
 
         if (findRange(this.playerPos) < 2) {
+            //battle();
             int attckValue = attack();
             //need to do some more
         }

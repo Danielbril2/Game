@@ -48,7 +48,7 @@ public class Board
     {
         for (Tile t : this.tiles)
             if (t.getTile() =='@')
-                return (Player)t;
+                return (Player) t;
         return null;
     }
 

@@ -18,17 +18,15 @@ public abstract class Enemy extends Unit
 
     public int getExperienceValue() {return this.experienceValue;}
 
-
     public void accept(Unit unit){
-
+        unit.visit(this);
     }
 
-    public void visit(Player p){
-        //probably not need to implement
+    public void visit(Player p){ //combat against the player
+        battle(p);
     }
 
-    public void visit(Enemy e){
-
+    public void visit(Enemy e){ //cannot go there so empty method
     }
 
     public void processStep(){
@@ -40,4 +38,6 @@ public abstract class Enemy extends Unit
     }
 
     public abstract Position move();
+
+    //public abstract boolean turn();
 }

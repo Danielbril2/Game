@@ -23,11 +23,39 @@ public class Mage extends Player
         this.abilityRange = abilityRange;
     }
 
-    public int gteCurrMana() {return this.currMana;}
-    public int getAbilityRange() {return this.abilityRange;}
-    public int getManaPool() {return this.manaPool;}
-    public int getManaCost() {return this.manaCost;}
-    public int getSpellPower() {return this.spellPower;}
-    public int getHitCounter() {return this.hitCounter;}
+
+
+    public Position move(){
+        currMana = Math.min(manaPool, currMana + level);
+
+        Position newPos = super.move();
+
+        if (newPos.equals(Position.at(-1,-1))){ //activate special ability
+            if (currMana >= manaCost){
+                currMana = currMana - manaCost;
+                int hits = 0;
+
+                while (hits < hitCounter /* and there are existing enemies in the abilityRange*/){
+                    //select random enemy in the range
+                    //deal damage equal to spell power(enemy can defend itself)
+                    hits++;
+                }
+            }
+            else
+                throw new RuntimeException("Cannot cast special ability");
+
+            return position;
+        }
+        else
+            return newPos;
+    }
+
+    @Override
+    public void levelUp(){
+        super.levelUp();
+        manaPool += 25 * level;
+        currMana = Math.min(currMana + manaPool/4,manaPool);
+        spellPower += 10 * level;
+    }
 
 }

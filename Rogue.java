@@ -12,12 +12,30 @@ public class Rogue extends Player
         this.currEnergy = 100;
     }
 
-    public int getCurrEnergy()
-    {
-        return this.currEnergy;
+    @Override
+    public Position move(){
+        currEnergy = Math.min(currEnergy + 10,100);
+
+        Position newPos = super.move();
+
+        if (newPos.equals(Position.at(-1,-1))){ //activate special ability
+            if (currEnergy >= cost){
+                currEnergy -= cost;
+                //for each enemy in range 2 deal damage equal to "attack". each enemy will try do defend itself
+            }
+            else
+                throw new RuntimeException("Cannot cast special ability");
+
+            return position;
+        }
+        else
+            return newPos;
     }
-    public int getCost()
-    {
-        return this.cost;
+
+    @Override
+    public void levelUp(){
+        super.levelUp();
+        currEnergy = 100;
+        setAttack(attack + (3 * level));
     }
 }

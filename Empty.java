@@ -9,7 +9,7 @@ public class Empty extends Tile{
     }
 
     public void accept(Unit unit){
-
+        unit.visit(this);
     }
 
 }

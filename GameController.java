@@ -15,6 +15,9 @@ public class GameController {
     }
 
     public void startGame(){
+        //need to choose the player somehow?
+
+        //also need to go to next level
         while(!isGameDone()){
             tick();
             //update map
@@ -23,20 +26,17 @@ public class GameController {
 
     private void tick(){
         Position playerDesiredPos = p.move();
-        //need to check if player can move here. If the desired position contains empty tile, wall tile
-        //or enemy tile
 
-        //interact does change the inner position of the player(Unit)
-        //but need to change the curr pos to dot if moving
-        p.interact(board.get(playerDesiredPos.getX(), playerDesiredPos.getY()));
-
+        Tile nextTile = board.get(playerDesiredPos.getX(), playerDesiredPos.getY());
+        p.interact(nextTile);
 
         List<Enemy> enemies = board.getEnemies();
         for(Enemy e: enemies) {
             e.updatePlayerPos(p.getPosition());
             Position enemyDesiredPos = e.move();
+            nextTile = board.get(enemyDesiredPos.getX(), enemyDesiredPos.getY());
+            e.interact(nextTile);
         }
-
 
     }
 

@@ -11,8 +11,6 @@ public class Monster extends Enemy{
         this.visionRange = visionRange;
     }
 
-    public int getVisionRange() {return this.visionRange;}
-
     @Override
     public Position move(){
         if (findRange(this.playerPos) < visionRange){
@@ -21,24 +19,21 @@ public class Monster extends Enemy{
             int dy = this.position.getY() - playerP.getY();
             if (Math.abs(dx) > Math.abs(dy))
                 if (dx > 0)
-                    setPosition(this.position.moveLeft());
+                    return this.position.moveLeft();
                 else
-                    setPosition(this.position.moveRight());
+                    return this.position.moveRight();
             else
                 if (dy > 0)
-                    setPosition(this.position.moveUp());
+                    return this.position.moveUp();
                 else
-                    setPosition(this.position.moveDown());
+                    return this.position.moveDown();
         }
-        else{
+        else{ //choosing randomly
             int[][] posUpdates = {{0,1},{0,-1},{-1,0},{1,0},{0,0}}; //up, down, left, right, nothing
             int moveNum = (int)(Math.random() * 5);
             int[] move = posUpdates[moveNum];
             Position moveP = Position.at(move[0],move[1]);
-            setPosition(position.addPos(moveP));
+            return position.addPos(moveP);
         }
-
-        return null;
-        //NEED TO CHANGE
     }
 }
