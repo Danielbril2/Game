@@ -27,8 +27,13 @@ public class GameController {
     private void tick(){
         Position playerDesiredPos = p.move();
 
-        Tile nextTile = board.get(playerDesiredPos.getX(), playerDesiredPos.getY());
-        p.interact(nextTile);
+        Tile nextTile;
+
+        if (!playerDesiredPos.equals(Position.at(-1,-1))) { //the player did not activated his special ability
+            nextTile = board.get(playerDesiredPos.getX(), playerDesiredPos.getY());
+            p.interact(nextTile);
+        }
+        p.processStep();
 
         List<Enemy> enemies = board.getEnemies();
         for(Enemy e: enemies) {

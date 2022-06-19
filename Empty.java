@@ -6,6 +6,7 @@ public class Empty extends Tile{
 
     public Empty(Position pos){
         super(dot);
+        initialize(pos);
     }
 
     public void accept(Unit unit){

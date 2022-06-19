@@ -1,4 +1,5 @@
 package com.company;
+import java.util.*;
 
 public class Rogue extends Player
 {
@@ -10,6 +11,7 @@ public class Rogue extends Player
         super (name, healCapacity, attack, defense);
         this.cost = cost;
         this.currEnergy = 100;
+        attackRange = 2;
     }
 
     @Override
@@ -21,15 +23,30 @@ public class Rogue extends Player
         if (newPos.equals(Position.at(-1,-1))){ //activate special ability
             if (currEnergy >= cost){
                 currEnergy -= cost;
-                //for each enemy in range 2 deal damage equal to "attack". each enemy will try do defend itself
+
+                specialMove();
             }
             else
-                throw new RuntimeException("Cannot cast special ability");
-
-            return position;
+                System.out.println("The warrior tried to use special ability even tho he is unable to do it at the moment :(");
         }
-        else
-            return newPos;
+        return newPos;
+    }
+
+    @Override
+    public void specialMove(){
+        List<Enemy> enemies = observer.findEnemiesInRange(attackRange);
+        for (Enemy e: enemies)
+            if (specialBattle(e, attack))
+                processKilling(e);
+    }
+
+    public boolean specialBattle(Unit u, int damage){
+        int opponentMove = u.defend();
+
+        if (damage > opponentMove)
+            u.acceptDamage(damage - opponentMove);
+
+        return !u.isAlive();
     }
 
     @Override

@@ -2,23 +2,29 @@ package com.company;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Player extends Unit
+public abstract class Player extends Unit
 {
     private int experience;
     protected int level;
     private static final char p = '@';
+    private boolean isAlive;
+    private int expForLeveling;
+    protected int attackRange;
 
     public Player(String name, int healCapacity, int attack, int defense)
     {
         super(p, name, healCapacity, attack, defense);
         this.experience = 0;
         this.level = 1;
+        this.isAlive = true;
+        this.expForLeveling = 50;
     }
 
-    private int getExperience(){return this.experience;}
+    public boolean isAlive(){return isAlive;}
     public void setExperience(int experience){ this.experience = experience;}
 
     public void levelUp() {
+        System.out.println("Player level");
         experience -= 50 * level;
         level++;
         health.setHealthPool(health.getHealthPool() + 10 * level);
@@ -37,17 +43,26 @@ public class Player extends Unit
 
     public void visit(Enemy e){
         //need to implement combat
-        battle(e);
-        e.battle(this);
+        boolean isEnemyKilled = battle(e); //our turn
+        if (isEnemyKilled)
+            processKilling(e);
+        else
+            e.battle(this); //enemy turn
+    }
+
+    public void processKilling(Enemy e){
+        this.experience += e.getExperienceValue();
     }
 
     public void processStep(){
-
+        if (experience >= expForLeveling * level)
+            levelUp(); //automatically goes to level up of the child
     }
 
-    public void onDeath(){
+    public void onDeath(){isAlive = false;}
 
-    }
+    public abstract void specialMove();
+    public abstract boolean specialBattle(Unit u, int damage);
 
     @Override
     public Position move() {
@@ -59,7 +74,7 @@ public class Player extends Unit
 
             char specialAbility = 'e';
             char[] moves = {'w', 's', 'a', 'd', 'q'};
-            int[][] posUpdates = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}, {0, 0}}; //up, down, left, right
+            int[][] posUpdates = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}, {0, 0}}; //up, down, left, right, nothing
 
             for (int i = 0; i < moves.length; i++) {
                 if (moves[i] == action) {

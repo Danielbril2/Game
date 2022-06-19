@@ -1,8 +1,10 @@
 package com.company;
 
+import java.util.List;
+import java.util.Random;
+
 public class Mage extends Player
 {
-
     private int manaPool;
     private int currMana;
     private int manaCost;
@@ -21,6 +23,7 @@ public class Mage extends Player
         this.spellPower = spellPower;
         this.hitCounter = hitCounter;
         this.abilityRange = abilityRange;
+        attackRange = this.abilityRange;
     }
 
 
@@ -33,21 +36,38 @@ public class Mage extends Player
         if (newPos.equals(Position.at(-1,-1))){ //activate special ability
             if (currMana >= manaCost){
                 currMana = currMana - manaCost;
-                int hits = 0;
 
-                while (hits < hitCounter /* and there are existing enemies in the abilityRange*/){
-                    //select random enemy in the range
-                    //deal damage equal to spell power(enemy can defend itself)
-                    hits++;
-                }
+                specialMove();
             }
             else
-                throw new RuntimeException("Cannot cast special ability");
-
-            return position;
+                System.out.println("The warrior tried to use special ability even tho he is unable to do it at the moment :(");
         }
-        else
-            return newPos;
+        return newPos;
+    }
+
+    @Override
+    public void specialMove(){
+        int hits = 0;
+        List<Enemy> enemies = observer.findEnemiesInRange(attackRange);
+
+        while (hits < hitCounter && enemies.size() != 0){
+            Random rand = new Random();
+            Enemy e = enemies.get(rand.nextInt(enemies.size())); //choosing random enemy
+            if (specialBattle(e,spellPower))
+                processKilling(e);
+
+            enemies = observer.findEnemiesInRange(attackRange);
+            hits++;
+        }
+    }
+
+    public boolean specialBattle(Unit u, int damage){
+        int opponentMove = u.defend();
+
+        if (damage > opponentMove)
+            u.acceptDamage(damage - opponentMove);
+
+        return !u.isAlive();
     }
 
     @Override

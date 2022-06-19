@@ -6,6 +6,7 @@ public abstract class Unit extends Tile implements Visitor {
     protected int attack;
     protected int defense;
     protected Health health;
+    protected Observer observer;
 
     public Unit(char tile,String name, int healCapacity, int attack, int defense)
     {
@@ -24,9 +25,11 @@ public abstract class Unit extends Tile implements Visitor {
     public void setAttack(int attack) {this.attack = attack;}
     public void setDefense(int defense) {this.defense = defense;}
 
-    protected void initialize(Position position, MessageCallback messageCallback){
+    protected void initialize(Position position, MessageCallback messageCallback,Observer observer){
         this.initialize(position);
+        this.observer = observer;
         //add something more
+
     }
 
     protected int attack(){
@@ -60,16 +63,24 @@ public abstract class Unit extends Tile implements Visitor {
     public abstract void visit(Player p);
     public abstract void visit(Enemy e);
 
+    public abstract boolean isAlive();
+
     // Combat against another unit.
-    protected void battle(Unit u){
+    protected boolean battle(Unit u){
         int ourMove = attack();
         int opponentMove = u.defend();
 
         if (ourMove > opponentMove)
             u.acceptDamage(ourMove - opponentMove);
+
+        return !u.isAlive(); //return true if the unit killed
     }
 
-    public void acceptDamage(int damage) {health.setHealthAmount(health.getHealthAmount() - damage);}
+    public void acceptDamage(int damage) {
+        health.setHealthAmount(health.getHealthAmount() - damage);
+        if (health.getHealthAmount() <= 0)
+            onDeath();
+    }
 
     public String describe() {
         return String.format("%s\t\tHealth: %s\t\tAttack: %d\t\tDefense: %d", getName(), getHealth(), getAttack(), getDefense());

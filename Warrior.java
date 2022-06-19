@@ -1,4 +1,5 @@
 package com.company;
+import java.util.*;
 
 public class Warrior extends  Player
 {
@@ -10,6 +11,7 @@ public class Warrior extends  Player
         super(name, healCapacity, attack, defense);
         this.cooldown = cooldown;
         this.remainingCooldown = 0;
+        attackRange = 3;
     }
 
     @Override
@@ -25,20 +27,33 @@ public class Warrior extends  Player
                 int maxHealth = health.getHealthPool();
                 getHealth().setHealthAmount(Math.min(currHealth + (10 * defense),maxHealth));
 
-                //find an enemy in range of 3 and attack him with 10% of health pool
+                specialMove();
             }
             else
-                throw new RuntimeException("Cannot cast special ability");
-
-            return position;
+                System.out.println("The warrior tried to use special ability even tho he is unable to do it at the moment :(");
         }
-        else
-            return newPos;
+        return newPos;
+    }
+
+    @Override
+    public void specialMove(){
+        List<Enemy> enemies = observer.findEnemiesInRange(attackRange);
+        Random rand = new Random();
+        Enemy e = enemies.get(rand.nextInt(enemies.size())); //choosing random enemy
+        if (specialBattle(e, (int)(health.getHealthPool() * 0.1)))
+            processKilling(e);
+    }
+    
+    public boolean specialBattle(Unit u, int damage){
+        u.acceptDamage(damage);
+
+        return !u.isAlive();
     }
 
     @Override
     public void levelUp(){
         super.levelUp();
+        System.out.println("we got here");
         remainingCooldown = 0;
         health.setHealthPool(health.getHealthPool() + 5 * level);
         setAttack(attack + (2 * level));

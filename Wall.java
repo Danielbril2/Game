@@ -5,6 +5,7 @@ public class Wall extends Tile{
 
     public Wall(Position pos){
         super(wall);
+        initialize(pos);
     }
 
     public void accept(Unit unit){
