@@ -14,10 +14,7 @@ public class Board
     }
 
     public Tile get(int x, int y) {
-        for(Tile t : tiles)
-            if (t.getPosition().equals(Position.at(x, y)))
-                return t;
-        return null;
+        return tiles.stream().filter((t) -> t.position.equals(Position.at(x,y))).toList().get(0);
     }
 
     public void remove(Tile e) {
@@ -36,20 +33,14 @@ public class Board
     public List<Tile> getTiles() {return tiles;}
 
     public List<Enemy> getEnemies(){
-        List<Enemy> res = new ArrayList<>();
-        for (Tile t : tiles) {
-            if (t.isEnemy())
-                res.add(t.getEnemyVersion());
-        }
-        return res;
+        List<Enemy> enemies = tiles.stream().filter(Tile::isEnemy).map(Tile::getEnemyVersion).toList();
+        return enemies;
+
     }
 
     public Player getPlayer()
     {
-        for (Tile t : this.tiles)
-            if (t.isPlayer())
-                return t.getPlayerVersion();
-        return null;
+        return tiles.stream().filter(Tile::isPlayer).map(Tile::getPlayerVersion).toList().get(0);
     }
 
 
