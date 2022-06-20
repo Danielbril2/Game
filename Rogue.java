@@ -14,6 +14,9 @@ public class Rogue extends Player
         attackRange = 2;
     }
 
+    public int getCurrEnergy(){return this.currEnergy;}
+    public int getCost(){return this.cost;}
+
     @Override
     public Position move(){
         currEnergy = Math.min(currEnergy + 10,100);
@@ -27,7 +30,7 @@ public class Rogue extends Player
                 specialMove();
             }
             else
-                System.out.println("The warrior tried to use special ability even tho he is unable to do it at the moment :(");
+                throw new RuntimeException("Cannot cast special ability");
         }
         return newPos;
     }
@@ -54,5 +57,10 @@ public class Rogue extends Player
         super.levelUp();
         currEnergy = 100;
         setAttack(attack + (3 * level));
+    }
+
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tenergy: %s", getCurrEnergy() + "/" + getCost());
     }
 }

@@ -26,6 +26,9 @@ public class Mage extends Player
         attackRange = this.abilityRange;
     }
 
+    public int getSpellPower(){return this.spellPower;}
+    public int getCurrMana() {return this.currMana;}
+    public int getManaPool() {return this.manaPool;}
 
 
     public Position move(){
@@ -40,7 +43,7 @@ public class Mage extends Player
                 specialMove();
             }
             else
-                System.out.println("The warrior tried to use special ability even tho he is unable to do it at the moment :(");
+                throw new RuntimeException("Cannot cast special ability");
         }
         return newPos;
     }
@@ -76,6 +79,11 @@ public class Mage extends Player
         manaPool += 25 * level;
         currMana = Math.min(currMana + manaPool/4,manaPool);
         spellPower += 10 * level;
+    }
+
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tMana: %d\t\tSpell Power: %s",getCurrMana() + "/" + getManaPool(),getSpellPower());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.company;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Observer {
     private Board b;
@@ -11,12 +12,12 @@ public class Observer {
     }
 
     public List<Enemy> findEnemiesInRange(int range){
-        List<Enemy> enemies = new ArrayList<>();
-        for(Enemy e: b.getEnemies())
-            if (e.findRange(p.getPosition()) == range)
-                enemies.add(e);
-        return enemies;
+        return b.getEnemies().stream().filter((e) -> e.findRange(p.getPosition())==range).collect(Collectors.toList());
     }
 
     public Player getPlayer(){return this.p;}
+
+    public void killEnemy(Tile t){
+        b.remove(t);
+    }
 }

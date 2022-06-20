@@ -14,6 +14,9 @@ public class Warrior extends  Player
         attackRange = 3;
     }
 
+    public int getCooldown(){return  this.cooldown;}
+    public int getRemainingCooldown(){return this.remainingCooldown;}
+
     @Override
     public Position move(){
         remainingCooldown -= 1;
@@ -30,7 +33,7 @@ public class Warrior extends  Player
                 specialMove();
             }
             else
-                System.out.println("The warrior tried to use special ability even tho he is unable to do it at the moment :(");
+                throw new RuntimeException("Cannot cast special ability");
         }
         return newPos;
     }
@@ -57,6 +60,11 @@ public class Warrior extends  Player
         health.setHealthPool(health.getHealthPool() + 5 * level);
         setAttack(attack + (2 * level));
         setDefense(defense + level);
+    }
+
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tcooldown: %s",getRemainingCooldown() + "/" + getCooldown());
     }
 
 }

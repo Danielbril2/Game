@@ -6,9 +6,9 @@ public abstract class Player extends Unit
 {
     private int experience;
     protected int level;
-    private static final char p = '@';
+    private static char p = '@';
     private boolean isAlive;
-    private int expForLeveling;
+    private final int expForLeveling;
     protected int attackRange;
 
     public Player(String name, int healCapacity, int attack, int defense)
@@ -22,6 +22,8 @@ public abstract class Player extends Unit
 
     public boolean isAlive(){return isAlive;}
     public void setExperience(int experience){ this.experience = experience;}
+    public int getlevel(){return this.level;}
+    public int getexperience(){return this.experience;}
 
     public void levelUp() {
         experience -= 50 * level;
@@ -51,6 +53,7 @@ public abstract class Player extends Unit
 
     public void processKilling(Enemy e){
         this.experience += e.getExperienceValue();
+        observer.killEnemy(e);
     }
 
     public void processStep(){
@@ -58,7 +61,10 @@ public abstract class Player extends Unit
             levelUp(); //automatically goes to level up of the child
     }
 
-    public void onDeath(){isAlive = false;}
+    public void onDeath(){
+        isAlive = false;
+        p = 'X';
+    }
 
     public abstract void specialMove();
     public abstract boolean specialBattle(Unit u, int damage);
@@ -66,7 +72,6 @@ public abstract class Player extends Unit
     @Override
     public Position move() {
         while (true) {
-
             Scanner input = new Scanner(System.in); //accept input from user
 
             char action = input.next().charAt(0); //convert input into char
@@ -86,13 +91,16 @@ public abstract class Player extends Unit
     }
 
     @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tlevel: %d\t\texperience: %d",getlevel(),getexperience());
+    }
+
+    @Override
     public boolean isEnemy() {return false;}
     @Override
     public Enemy getEnemyVersion() {return null;}
-
     @Override
     public boolean isPlayer() {return true;}
-
     @Override
     public Player getPlayerVersion() {return this;}
 }
