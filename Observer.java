@@ -1,4 +1,8 @@
 package com.company;
+import com.company.Enemies.Enemy;
+import com.company.Players.Player;
+import com.company.Tiles.Tile;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

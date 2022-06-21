@@ -1,4 +1,9 @@
 package com.company;
+import com.company.Enemies.Enemy;
+import com.company.Players.Player;
+import com.company.Tiles.Empty;
+import com.company.Tiles.Tile;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -14,7 +19,7 @@ public class Board
     }
 
     public Tile get(int x, int y) {
-        return tiles.stream().filter((t) -> t.position.equals(Position.at(x,y))).toList().get(0);
+        return tiles.stream().filter((t) -> t.getPosition().equals(Position.at(x,y))).toList().get(0);
     }
 
     public void remove(Tile e) {
@@ -26,8 +31,14 @@ public class Board
     @Override
     public String toString() {
         tiles = tiles.stream().sorted().collect(Collectors.toList());
-        // TODO: Implement me
-        throw new NoSuchElementException();
+        StringBuilder sb = new StringBuilder();
+        for(Tile t : tiles){
+            if(t.getPosition().getX() == 0){
+                sb.append("\n");
+            }
+            sb.append(t);
+        }
+        return sb.toString();
     }
 
     public List<Tile> getTiles() {return tiles;}
@@ -42,6 +53,5 @@ public class Board
     {
         return tiles.stream().filter(Tile::isPlayer).map(Tile::getPlayerVersion).toList().get(0);
     }
-
 
 }

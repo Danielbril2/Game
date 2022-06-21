@@ -1,12 +1,18 @@
 package com.company;
+import com.company.Enemies.Enemy;
+import com.company.Players.Player;
+import com.company.Tiles.Tile;
+
 import java.util.*;
 
 public class GameController {
     private Board board;
     private Player p;
+    private MessageCallback messageCallback;
 
-    public GameController(Board board){
+    public GameController(Board board, MessageCallback messageCallback){
         this.board = board;
+        this.messageCallback = messageCallback;
         this.p = findPlayer();
     }
 
@@ -15,14 +21,12 @@ public class GameController {
     }
 
     public void startGame(){
-        //need to choose the player somehow?
 
         while(isPlayerAlive()){
-            //need to start a level, that after that level go to the next level
             tick();
+            messageCallback.send(board.toString());
             //update map
         }
-        System.out.println("Game Over.");
     }
 
     private void tick(){
@@ -50,7 +54,7 @@ public class GameController {
         return findPlayer() != null;
     }
 
-    private boolean isLevelDone(){
+    private boolean isLevelDone(){ //checks if all enemies are dead
         List<Tile> tiles = board.getTiles();
         for(Tile t: tiles)
             if(t.isEnemy())
