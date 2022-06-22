@@ -20,8 +20,12 @@ public abstract class Enemy extends Unit
         isAlive = true;
     }
 
-    public void Initialize(Position position, MessageCallback messageCallback, Observer observer){
-        super.initialize(position,messageCallback,observer);
+    public void Initialize(Position position, MessageCallback messageCallback){
+        super.initialize(position,messageCallback);
+    }
+
+    public void initializeObserver(Observer observer){
+        super.initializeObserver(observer);
     }
 
     public void updatePlayerPos(Position pos){

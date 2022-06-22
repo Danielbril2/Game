@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.Tiles.Tile;
+
 public class Position {
     private int x;
     private int y;
@@ -28,12 +30,16 @@ public class Position {
         return Integer.compare(x,pos.getX());
     }
 
+    public boolean equal(Position pos) {
+        return (this.x == pos.getX() & this.y == pos.getY());
+    }
+
     public Position addPos(Position pos){
         return new Position(x + pos.getX(), y + pos.getY());
     }
 
-    public Position moveUp(){return new Position(this.x, this.y + 1);}
-    public Position moveDown(){return new Position(this.x, this.y  - 1);}
+    public Position moveUp(){return new Position(this.x, this.y - 1);}
+    public Position moveDown(){return new Position(this.x, this.y  + 1);}
     public Position moveLeft(){return new Position(this.x - 1, this.y);}
     public Position moveRight(){return new Position(this.x + 1, this.y);}
 }

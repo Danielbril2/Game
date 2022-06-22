@@ -13,6 +13,7 @@ public abstract class Tile {
     }
 
     protected void initialize(Position position){this.position = position;}
+    public void setTile(char t) {this.tile = t;}
 
     public char getTile() {
         return tile;
@@ -33,10 +34,9 @@ public abstract class Tile {
     public abstract Player getPlayerVersion();
     public abstract Enemy getEnemyVersion();
 
-//    @Override
-//    public int compareTo(Tile tile) {
-//        return getPosition().compareTo(tile.getPosition());
-//    }
+    public int compareTo(Tile tile) {
+        return getPosition().compareTo(tile.getPosition());
+    }
 
     @Override
     public String toString() {

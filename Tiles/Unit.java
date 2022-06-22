@@ -30,11 +30,15 @@ public abstract class Unit extends Tile implements Visitor {
     public void setAttack(int attack) {this.attack = attack;}
     public void setDefense(int defense) {this.defense = defense;}
 
-    protected void initialize(Position position, MessageCallback messageCallback, Observer observer){
+    protected void initialize(Position position, MessageCallback messageCallback){
         this.initialize(position);
-        this.observer = observer;
         this.messageCallback = messageCallback;
     }
+
+    protected void initializeObserver(Observer observer){
+        this.observer = observer;
+    }
+
 
     protected int attack(){
         int roll = (int)(Math.random() * this.attack);
@@ -43,7 +47,9 @@ public abstract class Unit extends Tile implements Visitor {
     }
 
     public int defend(){
-        return (int)(Math.random() * this.defense);
+        int roll = (int)(Math.random() * this.defense);
+        messageCallback.send(getName() + " rolled " + roll + " defense points.");
+        return roll;
     }
 
     // Should be automatically called once the unit finishes its turn
@@ -62,6 +68,7 @@ public abstract class Unit extends Tile implements Visitor {
 
     public void visit(Empty e){
         Position emptyPos = e.getPosition();
+        emptyPos = Position.at(emptyPos.getX(),emptyPos.getY());
         e.position.SetPosition(this.position);
         this.setPosition(emptyPos);
     }
@@ -73,11 +80,21 @@ public abstract class Unit extends Tile implements Visitor {
 
     // Combat against another unit.
     public boolean battle(Unit u){
+        messageCallback.send(getName() + " engaged in combat with " + u.getName());
+        messageCallback.send(describe());
+        messageCallback.send(u.describe());
+
         int ourMove = attack();
         int opponentMove = u.defend();
 
-        if (ourMove > opponentMove)
+        if (ourMove > opponentMove) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(getName());
+            sb.append("dealt ").append(Integer.toString(ourMove - opponentMove));
+            sb.append(" damage to ").append(u.getName());
+            messageCallback.send(sb.toString());
             u.acceptDamage(ourMove - opponentMove);
+        }
 
         return !u.isAlive(); //return true if the unit killed
     }

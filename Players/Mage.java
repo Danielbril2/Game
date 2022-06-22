@@ -40,14 +40,14 @@ public class Mage extends Player
 
         Position newPos = super.move();
 
-        if (newPos.equals(Position.at(-1,-1))){ //activate special ability
+        if (newPos.equal(Position.at(-1,-1))){ //activate special ability
             if (currMana >= manaCost){
                 currMana = currMana - manaCost;
 
                 specialMove();
             }
             else
-                throw new RuntimeException("Cannot cast special ability");
+                messageCallback.send("Cannot case special ability");
         }
         return newPos;
     }
@@ -87,7 +87,7 @@ public class Mage extends Player
 
     @Override
     public String describe(){
-        return super.describe() + String.format("\t\tMana: %d\t\tSpell Power: %s",getCurrMana() + "/" + getManaPool(),getSpellPower());
+        return super.describe() + String.format("\t\tMana: %s\t\tSpell Power: %s",getCurrMana() + "/" + getManaPool(),getSpellPower());
     }
 
 }

@@ -1,6 +1,9 @@
 package com.company.Players;
 import com.company.Enemies.Enemy;
+import com.company.MessageCallback;
+import com.company.Observer;
 import com.company.Position;
+import com.company.TileFactory;
 import com.company.Tiles.Unit;
 
 import java.util.Scanner;
@@ -28,10 +31,13 @@ public abstract class Player extends Unit
     public int getlevel(){return this.level;}
     public int getexperience(){return this.experience;}
 
+    public void initialize(Position position, MessageCallback messageCallback){ super.initialize(position,messageCallback);}
+    public void initializeObserver(Observer observer){super.initializeObserver(observer);}
+
     public void levelUp() {
         experience -= 50 * level;
         level++;
-        health.setHealthPool(health.getHealthPool() + 10 * level);
+        health.setHealthPool(health.getHealthPool() + (10 * level));
         health.setHealthAmount(health.getHealthPool());
         attack += 4 * level;
         defense += level;
@@ -42,16 +48,17 @@ public abstract class Player extends Unit
     }
 
     public void visit(Player p){
-        throw new RuntimeException("Player cannot visit another player");
+//        empty function
     }
 
     public void visit(Enemy e){
         // trying to fight an enemy
+
         boolean isEnemyKilled = battle(e); // our turn
-        if (isEnemyKilled)
+        if (isEnemyKilled) {
+            messageCallback.send(getName() + " killed " + e.getName());
             processKilling(e);
-        else
-            e.battle(this); // enemy turn
+        }
     }
 
     public void processKilling(Enemy e){
@@ -67,7 +74,7 @@ public abstract class Player extends Unit
     @Override
     public void onDeath(){
         isAlive = false;
-        p = 'X';
+        this.setTile('X');
     }
 
     // for the superpower move
@@ -82,7 +89,7 @@ public abstract class Player extends Unit
             char action = input.next().charAt(0); //convert input into char
 
             char specialAbility = 'e';
-            char[] moves = {'w', 's', 'a', 'd', 'q'};
+            char[] moves = {'s', 'w', 'a', 'd', 'q'};
             int[][] posUpdates = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}, {0, 0}}; //up, down, left, right, nothing
 
             for (int i = 0; i < moves.length; i++) {

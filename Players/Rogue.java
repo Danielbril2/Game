@@ -27,14 +27,14 @@ public class Rogue extends Player
 
         Position newPos = super.move();
 
-        if (newPos.equals(Position.at(-1,-1))){ //activate special ability
+        if (newPos.equal(Position.at(-1,-1))){ //activate special ability
             if (currEnergy >= cost){
                 currEnergy -= cost;
 
                 specialMove();
             }
             else
-                throw new RuntimeException("Cannot cast special ability");
+                messageCallback.send("Cannot case special ability");
         }
         return newPos;
     }

@@ -20,13 +20,19 @@ public class GameController {
         return board.getPlayer();
     }
 
-    public void startGame(){
+    public boolean startGame(){
+        initializeObservers();
 
-        while(isPlayerAlive()){
-            tick();
+        while(!isLevelDone()){
             messageCallback.send(board.toString());
-            //update map
+            messageCallback.send(p.describe());
+            tick();
+
+            if (!isPlayerAlive()) //if player dead that return false
+                return false;
         }
+
+        return true;
     }
 
     private void tick(){
@@ -34,8 +40,9 @@ public class GameController {
 
         Tile nextTile;
 
-        if (!playerDesiredPos.equals(Position.at(-1,-1))) { //the player did not activate his special ability
-            nextTile = board.get(playerDesiredPos.getX(), playerDesiredPos.getY());
+        if (!playerDesiredPos.equal(Position.at(-1,-1))) { //the player did not activate his special ability
+            nextTile = board.get(playerDesiredPos);
+            System.out.println(nextTile.toString());
             p.interact(nextTile);
         }
         p.processStep();
@@ -44,14 +51,14 @@ public class GameController {
         for(Enemy e: enemies) {
             e.updatePlayerPos(p.getPosition());
             Position enemyDesiredPos = e.move();
-            nextTile = board.get(enemyDesiredPos.getX(), enemyDesiredPos.getY());
+            nextTile = board.get(enemyDesiredPos);
             e.interact(nextTile);
         }
-
     }
 
     public boolean isPlayerAlive(){
-        return findPlayer() != null;
+        this.p = findPlayer();
+        return p != null && p.isAlive();
     }
 
     private boolean isLevelDone(){ //checks if all enemies are dead
@@ -60,5 +67,12 @@ public class GameController {
             if(t.isEnemy())
                 return false;
         return true;
+    }
+
+    private void initializeObservers(){
+        p.initializeObserver(new Observer(board));
+
+        for (Enemy e: board.getEnemies())
+            e.initializeObserver(new Observer(board));
     }
 }

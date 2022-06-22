@@ -31,7 +31,7 @@ public class Monster extends Enemy {
                     return this.position.moveDown();
         }
         else{ //choosing randomly
-            int[][] posUpdates = {{0,1},{0,-1},{-1,0},{1,0},{0,0}}; //up, down, left, right, nothing
+            int[][] posUpdates = {{0,-1},{0,1},{-1,0},{1,0},{0,0}}; //down, up, left, right, nothing
             int moveNum = (int)(Math.random() * 5);
             int[] move = posUpdates[moveNum];
             Position moveP = Position.at(move[0],move[1]);

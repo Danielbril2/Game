@@ -10,12 +10,13 @@ import com.company.Tiles.Empty;
 import com.company.Tiles.Wall;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class TileFactory {
     private List<Supplier<Player>> playersList;
-    private List<Enemy> enemiesMap;
+    private Map<Character, Supplier<Enemy>> enemiesMap;
     private Player selected;
 
     public TileFactory(){
@@ -23,7 +24,7 @@ public class TileFactory {
         enemiesMap = initEnemies();
     }
 
-    private List<Enemy> initEnemies() {
+    private Map<Character, Supplier<Enemy>> initEnemies() {
         List<Supplier<Enemy>> enemies = Arrays.asList(
                 () -> new Monster('s', "Lannister Solider", 80, 8, 3,25, 3),
                 () -> new Monster('k', "Lannister Knight", 200, 14, 8, 50,   4),
@@ -40,12 +41,12 @@ public class TileFactory {
                 () -> new Trap('D', "Death Trap", 500, 100, 20, 250, 1, 10)
         );
 
-        return enemies.stream().map(Supplier::get).collect(Collectors.toList());
+        return enemies.stream().collect(Collectors.toMap(s -> s.get().getTile(), Function.identity()));
     }
 
     private List<Supplier<Player>> initPlayers() {
         return Arrays.asList(
-                () -> new Warrior("Jon Snow", 300, 30, 4, 3),
+                () -> new Warrior("Jon Snow", 300, 3000, 4, 3),
                 () -> new Warrior("The Hound", 400, 20, 6, 5),
                 () -> new Mage("Melisandre", 100, 5, 1, 300, 30, 15, 5, 6),
                 () -> new Mage("Thoros of Myr", 250, 25, 4, 150, 20, 20, 3, 4),
@@ -59,16 +60,27 @@ public class TileFactory {
         return playersList.stream().map(Supplier::get).collect(Collectors.toList());
     }
 
-    // TODO: Add additional callbacks of your choice
-
-    public Enemy produceEnemy(char tile) {
-        Enemy enemy = enemiesMap.stream().filter((e) -> e.getTile() == tile).toList().get(0);
-        return enemy;
+    public Enemy produceEnemy(char tile, Position pos, MessageCallback msgCallback) {
+        try {
+            Enemy enemy = enemiesMap.get(tile).get();
+            enemy.Initialize(pos, msgCallback);
+            return enemy;
+        }
+        catch (Exception e) {
+            System.out.println("error: " + tile);
+            return null;
+        }
     }
 
-    public Player producePlayer(int idx){
+    public Player producePlayer(int idx, Position pos, MessageCallback msgCallbac){
         selected = listPlayers().get(idx);
-        return selected;
+        selected.initialize(pos, msgCallbac);
+        if (selected != null)
+            return selected;
+        else {
+            System.out.println("null error");
+            return null;
+        }
     }
 
     public Empty produceEmpty(Position position){

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Warrior extends Player
 {
-    private int cooldown;
+    private final int cooldown;
     private int remainingCooldown;
 
     public Warrior (String name, int healCapacity, int attack, int defense, int cooldown)
@@ -21,23 +21,29 @@ public class Warrior extends Player
     public int getCooldown(){return  this.cooldown;}
     public int getRemainingCooldown(){return this.remainingCooldown;}
 
+    private void cooldownRemainDesc(){
+        if (remainingCooldown > 0)
+            remainingCooldown--;
+    }
+
     @Override
     public Position move(){
-        remainingCooldown -= 1;
+        cooldownRemainDesc();
 
         Position newPos = super.move();
 
-        if (newPos.equals(Position.at(-1,-1))){ //activate special ability
-            if (remainingCooldown <= 0){
+        if (newPos.equal(Position.at(-1,-1))){ //activate special ability
+            if (remainingCooldown == 0){
                 remainingCooldown = cooldown;
                 int currHealth = health.getHealthAmount();
                 int maxHealth = health.getHealthPool();
-                getHealth().setHealthAmount(Math.min(currHealth + (10 * defense),maxHealth));
+                health.setHealthAmount(Math.min(currHealth + (10 * defense),maxHealth));
 
                 specialMove();
+                messageCallback.send(getName() + " used his special attack");
             }
             else
-                throw new RuntimeException("Cannot cast special ability");
+                messageCallback.send("Cannot case special ability");
         }
         return newPos;
     }
@@ -46,9 +52,11 @@ public class Warrior extends Player
     public void specialMove(){
         List<Enemy> enemies = observer.findEnemiesInRange(attackRange);
         Random rand = new Random();
-        Enemy e = enemies.get(rand.nextInt(enemies.size())); //choosing random enemy
-        if (specialBattle(e, (int)(health.getHealthPool() * 0.1)))
-            processKilling(e);
+        if (enemies.size() > 0) {
+            Enemy e = enemies.get(rand.nextInt(enemies.size())); //choosing random enemy
+            if (specialBattle(e, (int) (health.getHealthPool() * 0.1)))
+                processKilling(e);
+        }
     }
 
     public boolean specialBattle(Unit u, int damage){

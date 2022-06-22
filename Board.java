@@ -16,10 +16,15 @@ public class Board
         tiles = new ArrayList<>();
         for(Tile[] line : board)
             tiles.addAll(Arrays.asList(line));
+        tiles.removeAll(Collections.singleton(null));
     }
 
-    public Tile get(int x, int y) {
-        return tiles.stream().filter((t) -> t.getPosition().equals(Position.at(x,y))).toList().get(0);
+    public Tile get(Position pos) {
+        //return tiles.stream().filter((t) -> t.getPosition().equals(Position.at(x,y))).toList().get(0);
+        for (Tile t: tiles)
+            if (t.getPosition().equal(pos))
+                return t;
+        return null;
     }
 
     public void remove(Tile e) {
@@ -30,7 +35,7 @@ public class Board
 
     @Override
     public String toString() {
-        tiles = tiles.stream().sorted().collect(Collectors.toList());
+        tiles = tiles.stream().sorted(Tile::compareTo).collect(Collectors.toList());
         StringBuilder sb = new StringBuilder();
         for(Tile t : tiles){
             if(t.getPosition().getX() == 0){
@@ -51,7 +56,12 @@ public class Board
 
     public Player getPlayer()
     {
-        return tiles.stream().filter(Tile::isPlayer).map(Tile::getPlayerVersion).toList().get(0);
+//        return tiles.stream().filter(Tile::isPlayer).map(Tile::getPlayerVersion).toList().get(0);
+        for (Tile p: tiles)
+            if (p != null)
+                if (p.getTile() == '@')
+                    return p.getPlayerVersion();
+        return null;
     }
 
 }
