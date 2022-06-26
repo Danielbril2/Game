@@ -43,10 +43,12 @@ public class Controller {
 
                 GameController levelManager = new GameController(levelBoard, msg);
                 stopGame = levelManager.startGame(); //if player dead, returns false
-                if (!stopGame)
+                if (!stopGame) { //player dead
                     uiController.print(levelBoard.toString()); //last update
+                    uiController.print("GAME OVER.");
+                }
             }
-            uiController.print("GAME OVER.");
+            uiController.print("CONGRATULATIONS YOU WON THE GAME, THANKS TO TAL BARAMI FOR THE GREAT PROJECT.");
         }
     }
 

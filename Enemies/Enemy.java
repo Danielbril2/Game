@@ -53,6 +53,11 @@ public abstract class Enemy extends Unit
     public abstract Position move();
 
     @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tExperience Value: %s", getExperienceValue());
+    }
+
+    @Override
     public boolean isEnemy(){return true;}
     @Override
     public Enemy getEnemyVersion() {return this;}

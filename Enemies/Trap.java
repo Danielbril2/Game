@@ -20,6 +20,9 @@ public class Trap extends Enemy {
         this.ActualTile = tile;
     }
 
+    public int getVisibilityTime(){return this.visibilityTime;}
+    public int getInvisibilityTime(){return this.invisibilityTime;}
+
     @Override
     public Position move(){
         visible = tickCounter < visibilityTime;
@@ -40,6 +43,11 @@ public class Trap extends Enemy {
             setTile(ActualTile);
         else
             setTile('.');
+    }
+
+    @Override
+    public String describe(){
+        return super.describe() + String.format("\t\tVisibility Time: %s\t\tInvisibility Time: %s",getVisibilityTime(),getInvisibilityTime());
     }
 
 
