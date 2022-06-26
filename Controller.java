@@ -31,6 +31,26 @@ public class Controller {
     public void startGame(){
         List<File> allLevels = getAllLevels(levelsPath);
 
+        int choosePlayer = SelectPlayerScreen(); // The first screen where user chooses the player
+
+        if (choosePlayer != -1) { //if choosePlayer equals -1 than user entered wrong number
+
+            boolean stopGame = true;
+            for (currLevel = 1; currLevel <= allLevels.size() & stopGame; currLevel++) { //go through all levels
+                Board levelBoard = getCurrLevel(allLevels, choosePlayer - 1);
+                Player p = levelBoard.getPlayer();
+                uiController.print("You have selected: \n" + p.getName());
+
+                GameController levelManager = new GameController(levelBoard, msg);
+                stopGame = levelManager.startGame(); //if player dead, returns false
+                if (!stopGame)
+                    uiController.print(levelBoard.toString()); //last update
+            }
+            uiController.print("GAME OVER.");
+        }
+    }
+
+    private int SelectPlayerScreen(){
         uiController.print("Select player: ");
         List<Player> players = tf.listPlayers();
         int playerCounter = 1;
@@ -40,20 +60,21 @@ public class Controller {
         }
 
         Scanner input = new Scanner(System.in); //choose player
-        int choosePlayer = Character.getNumericValue(input.next().charAt(0));
+        String info = input.next();
 
-        boolean stopGame = true;
-        for (currLevel = 1; currLevel <= allLevels.size() & stopGame; currLevel++) { //go through all levels
-            Board levelBoard = getCurrLevel(allLevels, choosePlayer - 1);
-            Player p = levelBoard.getPlayer();
-            uiController.print("You have selected: \n" + p.getName());
-
-            GameController levelManager = new GameController(levelBoard, msg);
-            stopGame = levelManager.startGame(); //if player dead, returns false
-            if (!stopGame)
-                msg.send(levelBoard.toString()); //last update
+        if (info.length() != 1) {
+            uiController.print("Cannot accept this number, please enter again." + "\n");
+            while (info.length() != 1) {
+                info = input.next();
+            }
         }
-        msg.send("GAME OVER.");
+
+        int choosePlayer = Character.getNumericValue(info.charAt(0));
+        if (choosePlayer <= 0 | choosePlayer > playerCounter) {
+            uiController.print("You entered wrong number, please restart the game.");
+            return -1;
+        }
+        return choosePlayer;
     }
 
     private Board getCurrLevel(List<File> allLevels, int playerNum){

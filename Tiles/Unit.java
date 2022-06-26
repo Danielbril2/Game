@@ -61,7 +61,7 @@ public abstract class Unit extends Tile implements Visitor {
     public abstract void accept(Unit unit);
 
     // This unit attempts to interact with another tile.
-    public void interact(Tile tile){
+    public void interact(Tile tile){ //empty enemy
         if (tile.getTile() != '#')// we cannot go to a wall
             tile.accept(this);
     }

@@ -42,7 +42,6 @@ public class GameController {
 
         if (!playerDesiredPos.equal(Position.at(-1,-1))) { //the player did not activate his special ability
             nextTile = board.get(playerDesiredPos);
-            System.out.println(nextTile.toString());
             p.interact(nextTile);
         }
         p.processStep();
